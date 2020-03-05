@@ -1,6 +1,8 @@
 <div id="inner_wrapper" >
-<div id="ideology-result"></div>
-<button type="button" class="btn btn-danger" id="generate-result" onclick="generateNew()">MORE</button>
+  <div id="ideology-result"></div>
+  <div id="button-div">
+    <button type="button" class="btn btn-danger" id="generate-result" onclick="generateNew()">MORE</button>
+  </div>
 </div>
 
 <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/cyborg/bootstrap.min.css" rel="stylesheet" integrity="sha384-l7xaoY0cJM4h9xh1RfazbgJVUZvdtyLWPueWNtLAphf/UbBgOVzqbOTogxPwYLHM" crossorigin="anonymous">
