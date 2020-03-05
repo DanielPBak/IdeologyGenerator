@@ -1,5 +1,14 @@
 <div id="ideology-result"></div>
  
 <script>
-document.getElementById("ideology-result").innerHTML = "Here is the ideology result!";
+ 
+const Http = new XMLHttpRequest();
+const url='https://975kxs927c.execute-api.us-east-1.amazonaws.com/default/service_ideology';
+Http.open("GET", url);
+Http.send();
+
+Http.onreadystatechange = (e) => {
+  document.getElementById("ideology-result").innerHTML = Http.responseText;
+}
+ 
 </script>
