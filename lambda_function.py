@@ -123,7 +123,7 @@ class Generator:
         ideologies = []
 
         for i in range(0, n_ideologies):
-            ideologies.append(self.generate_ideology(p_ending=0.25))
+            ideologies.append(self.generate_ideology())
         return ideologies
 
     def get_noun(self, p_adj=0.5, p_prefix=0.5, p_double=0.25):
@@ -146,7 +146,7 @@ class Generator:
 
         return noun
 
-    def get_desc(self, p_prefix=0.5, p_adj=0.33, p_double=0.3, p_adverb=0.2):
+    def get_desc(self, p_prefix=0.5, p_adj=0.33, p_double=0.4, p_adverb=0.2):
 
         desc_idx = self.weighted_choice(self.all_descs_weights)
 
@@ -228,7 +228,7 @@ class Generator:
         return adverb
 
 
-    def generate_ideology(self, p_ending=0.5, p_start=0.5):
+    def generate_ideology(self, p_ending=0.33, p_start=0.5):
         force_prefix = random.choice([False, True])
 
         if force_prefix:
