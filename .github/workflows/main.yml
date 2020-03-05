@@ -1,7 +1,9 @@
 name: deploy to lambda
-on: [push]
+on:
+  push:
+    branches: 
+      - master
 jobs:
-
   deploy_source:
     name: deploy lambda from source
     runs-on: ubuntu-latest
