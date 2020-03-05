@@ -1,4 +1,4 @@
-<div id="inner_wrapper" >
+<div id="inner_wrapper">
   <h2 id="ideology-result" style="text-align:center"></h2>
   <div id="button-div">
     <button type="button" class="btn btn-danger" id="generate-result" onclick="generateNew()">MORE</button>
