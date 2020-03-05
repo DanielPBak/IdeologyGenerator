@@ -12,7 +12,9 @@ const Http = new XMLHttpRequest();
 const url='https://975kxs927c.execute-api.us-east-1.amazonaws.com/default/service_ideology';
 
 Http.onreadystatechange = (e) => {
-  document.getElementById("ideology-result").innerHTML = Http.responseText;
+  if(Http.readyState === XMLHttpRequest.DONE) {
+      document.getElementById("ideology-result").innerHTML = Http.responseText;
+  }
 }
 
 function generateNew(){
@@ -20,6 +22,7 @@ function generateNew(){
     Http.send();
 
  }
+ generateNew();
  
  
 </script>
