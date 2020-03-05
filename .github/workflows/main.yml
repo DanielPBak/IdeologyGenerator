@@ -1,6 +1,8 @@
 name: deploy to lambda
 on:
   push:
+    paths: 
+      - "lambda_function.py"
     branches: 
       - master
 jobs:
