@@ -1,6 +1,6 @@
 <div id="main">
 <div id="ideology-result"></div>
-<button type="button" class="btn btn-primary" id="generate-result" onclick="generateNew()">MORE</button>
+<button type="button" class="btn btn-danger" id="generate-result" onclick="generateNew()">MORE</button>
 </div>
 
 <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/cyborg/bootstrap.min.css" rel="stylesheet" integrity="sha384-l7xaoY0cJM4h9xh1RfazbgJVUZvdtyLWPueWNtLAphf/UbBgOVzqbOTogxPwYLHM" crossorigin="anonymous">
