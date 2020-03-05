@@ -1,4 +1,4 @@
-<div id="main">
+<div id="wrapper" >
 <div id="ideology-result"></div>
 <button type="button" class="btn btn-danger" id="generate-result" onclick="generateNew()">MORE</button>
 </div>
