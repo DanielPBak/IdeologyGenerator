@@ -168,8 +168,8 @@ class Generator:
         adj = adj.replace('{Noun}', '{noun}')
 
         if '{adj1}' in adj or '{adj2}' in adj:
-            adj = adj.format(adj1=self.get_desc(p_adj=p_adj * p_adj, p_double=0),
-                             adj2=self.get_desc(p_adj=p_adj * p_adj, p_double=0))
+            adj = adj.format(adj1=self.get_desc(p_adj=p_adj * p_adj * p_adj, p_double=0),
+                             adj2=self.get_desc(p_adj=p_adj * p_adj * p_adj, p_double=0))
 
             return adj
 
@@ -185,7 +185,7 @@ class Generator:
             adj = self.get_adverb() + ' ' + adj
 
         if random.random() < p_adj:
-            adj = '{} {}'.format(self.get_desc(p_prefix * .8, p_adj * p_adj), adj)
+            adj = '{} {}'.format(self.get_desc(p_prefix * .8, p_adj * p_adj * p_adj), adj)
         return adj
 
     def get_prefix(self, p_prefix=0.15, p_hyphen=0.5):
