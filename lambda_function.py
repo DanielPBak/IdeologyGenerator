@@ -328,6 +328,7 @@ def lambda_handler(event, context):
     print(event)
     try:
         ideology = generate_one_ideo()
+        print(ideology)
     except Exception as e:
         ideology = str(e)
         raise e
