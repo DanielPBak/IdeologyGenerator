@@ -16,18 +16,28 @@
 
 <script>
 const Http = new XMLHttpRequest();
-const url='https://975kxs927c.execute-api.us-east-1.amazonaws.com/Prod/service_ideology';
+const url='https://975kxs927c.execute-api.us-east-1.amazonaws.com/Prod/service_ideology/Dev';
+var ideologies = [];
 
 Http.onreadystatechange = (e) => {
   if(Http.readyState === XMLHttpRequest.DONE) {
-      document.getElementById("ideology-result").innerHTML = Http.responseText;
+      ideologies = ideologies.concat(JSON.parse(Http.responseText));
+      if (document.getElementById("ideology-result").innerHTML == ""){
+        document.getElementById("ideology-result").innerHTML = ideologies.shift();
+      }
   }
 }
 
 function generateNew(){
+  if (ideologies.length > 0){
+    document.getElementById("ideology-result").innerHTML = ideologies.shift();
+  }
+
+  if (ideologies.length <= 1){
     Http.open("GET", url);
     Http.send();
-
+  }
+    
  }
  generateNew();
  
