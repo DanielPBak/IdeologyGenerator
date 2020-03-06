@@ -1,10 +1,9 @@
 <div id="inner_wrapper">
-  <h3 id="ideology-result" style="text-align:center"></h3>
+  <h5 id="ideology-result" style="text-align:center"></h5>
   <div id="button-div">
     <button type="button" class="btn btn-danger" id="generate-result" onclick="generateNew()">MORE</button>
   </div>
 </div>
-
 
 <div class="fb-share-button" data-href="https://danielpbak.github.io/IdeologyGenerator/" data-layout="button" data-size="small" style="position:fixed; bottom:10px; right:10px;"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdanielpbak.github.io%2FIdeologyGenerator%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>
 
@@ -17,7 +16,7 @@
 
 <script>
 const Http = new XMLHttpRequest();
-const url='https://975kxs927c.execute-api.us-east-1.amazonaws.com/default/service_ideology';
+const url='https://975kxs927c.execute-api.us-east-1.amazonaws.com/Prod/service_ideology/Dev';
 
 Http.onreadystatechange = (e) => {
   if(Http.readyState === XMLHttpRequest.DONE) {
@@ -28,7 +27,6 @@ Http.onreadystatechange = (e) => {
 function generateNew(){
     Http.open("GET", url);
     Http.send();
-    ga('send', 'event', 'generateNew', 'generateNew', '0', '0');
 
  }
  generateNew();
