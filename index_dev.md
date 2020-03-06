@@ -25,6 +25,7 @@ Http.onreadystatechange = (e) => {
 function generateNew(){
     Http.open("GET", url);
     Http.send();
+    ga('send', 'event', 'generateNew', 'generateNew', '0', '0');
 
  }
  generateNew();
