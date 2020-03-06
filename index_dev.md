@@ -21,16 +21,23 @@ const ideologies = [];
 
 Http.onreadystatechange = (e) => {
   if(Http.readyState === XMLHttpRequest.DONE) {
-      var request_obj = JSON.parse(Http.responseText);
-      console.log(request_obj);
-      document.getElementById("ideology-result").innerHTML = request_obj;
+      ideologies = ideologies.concat(JSON.parse(Http.responseText));
+      if (document.getElementById("ideology-result").innerHTML == ""){
+        document.getElementById("ideology-result").innerHTML = ideologies.shift();
+      }
   }
 }
 
 function generateNew(){
+  if (ideologies.length > 0){
+    document.getElementById("ideology-result").innerHTML = ideologies.shift();
+  }
+
+  if (ideologies.length <= 1){
     Http.open("GET", url);
     Http.send();
-
+  }
+    
  }
  generateNew();
  
