@@ -1,5 +1,5 @@
 <div id="inner_wrapper">
-  <h3 id="ideology-result" style="text-align:center"></h3>
+  <h5 id="ideology-result" style="text-align:center"></h5>
   <div id="button-div">
     <button type="button" class="btn btn-danger" id="generate-result" onclick="generateNew()">MORE</button>
   </div>
