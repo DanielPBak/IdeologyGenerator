@@ -14,7 +14,7 @@
 
 <script>
 const Http = new XMLHttpRequest();
-const url='https://975kxs927c.execute-api.us-east-1.amazonaws.com/default/service_ideology';
+const url='https://975kxs927c.execute-api.us-east-1.amazonaws.com/Prod/service_ideology';
 
 Http.onreadystatechange = (e) => {
   if(Http.readyState === XMLHttpRequest.DONE) {
