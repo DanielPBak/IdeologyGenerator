@@ -38,7 +38,7 @@ function generateNew(){
     Http.send('5');
   }
   else if (ideologies.length <= 5){
-      Http.open("GET", url);
+      Http.open("POST", url);
       Http.send('25');
   }
     
