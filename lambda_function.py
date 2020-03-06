@@ -325,7 +325,7 @@ def generate_one_ideo():
                 
 
 def lambda_handler(event, context):
-    
+    print(event)
     try:
         ideology = generate_one_ideo()
     except Exception as e:
