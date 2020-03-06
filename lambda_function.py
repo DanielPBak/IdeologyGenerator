@@ -335,6 +335,9 @@ def lambda_handler(event, context):
         ideology = str(e)
         raise e
         
+    print(event.keys())
+    print(ideology)
+    
 #     ref = event['referer']
 #     user_ag = event['userAgent']
 #     src_ip = event['sourceIp']
