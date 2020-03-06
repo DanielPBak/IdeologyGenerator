@@ -334,15 +334,11 @@ def lambda_handler(event, context):
     except Exception as e:
         ideology = str(e)
         raise e
-        
-    print(event.keys())
+  
+    print('## EVENT')
+    print(event)
     print(ideology)
     
-#     ref = event['referer']
-#     user_ag = event['userAgent']
-#     src_ip = event['sourceIp']
-    
-#     print('{}\n{}\n{}\n{}'.format(ideology, ref, user_ag, src_ip))
     return {
         'statusCode': 200,
         'body': json.dumps(ideology)
