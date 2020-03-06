@@ -330,7 +330,7 @@ def lambda_handler(event, context):
         if random.random() < 0.001 and False:
             ideologies = ["I know who you are."]
         else:
-            ideologies = gen.get_ideologies(100)[0]
+            ideologies = gen.get_ideologies(10)[0]
     except Exception as e:
         ideologies = str(e)
         raise e
