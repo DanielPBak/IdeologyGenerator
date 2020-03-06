@@ -339,6 +339,7 @@ def lambda_handler(event, context):
     print(event)
     print(ideology)
     
+    ideology = "This shouldn't happen."
     return {
         'statusCode': 200,
         'body': json.dumps(ideology)
