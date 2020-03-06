@@ -17,7 +17,7 @@
 <script>
 const Http = new XMLHttpRequest();
 const url='https://975kxs927c.execute-api.us-east-1.amazonaws.com/Prod/service_ideology/Dev';
-const ideologies = [];
+var ideologies = [];
 
 Http.onreadystatechange = (e) => {
   if(Http.readyState === XMLHttpRequest.DONE) {
