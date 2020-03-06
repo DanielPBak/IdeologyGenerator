@@ -325,12 +325,15 @@ def generate_one_ideo():
                 
 
 def lambda_handler(event, context):
-    print(event)
+    if 'body' in event:
+        n_ideologies = int(event['body'])
+    else:
+        n_ideologies = 5
     try:
         if random.random() < 0.001 and False:
             ideologies = ["I know who you are."]
         else:
-            ideologies = gen.get_ideologies(10)[0]
+            ideologies = gen.get_ideologies(n_ideologies)[0]
     except Exception as e:
         ideologies = str(e)
         raise e
