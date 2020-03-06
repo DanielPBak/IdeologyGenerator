@@ -22,6 +22,7 @@ const ideologies = [];
 Http.onreadystatechange = (e) => {
   if(Http.readyState === XMLHttpRequest.DONE) {
       var request_obj = JSON.parse(Http.responseText);
+      console.log(request_obj);
       document.getElementById("ideology-result").innerHTML = request_obj;
   }
 }
