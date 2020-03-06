@@ -327,8 +327,11 @@ def generate_one_ideo():
 def lambda_handler(event, context):
     print(event)
     try:
-        ideology = generate_one_ideo()
-        print(ideology)
+        if random.random() < 0.01:
+            ideology = "I know who you are."
+        else:
+            ideology = generate_one_ideo()
+            print(ideology)
     except Exception as e:
         ideology = str(e)
         raise e
