@@ -55,9 +55,6 @@ class Generator:
                 words = row[0]
 
 
-                i += 1
-                print(i)
-
                 words = words.split(',')
                 words = [word.capitalize().replace(';', ',').title() for word in words]
 
