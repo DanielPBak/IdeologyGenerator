@@ -327,21 +327,21 @@ def generate_one_ideo():
 def lambda_handler(event, context):
     print(event)
     try:
-        if random.random() < 0.001:
-            ideology = "I know who you are."
+        if random.random() < 0.001 and False:
+            ideologies = ["I know who you are."]
         else:
-            ideology = generate_one_ideo()
+            ideologies = gen.get_ideologies(100)
     except Exception as e:
-        ideology = str(e)
+        ideologies = str(e)
         raise e
   
     print('## EVENT')
     print(event)
-    print(ideology)
+    print(ideologies)
     
     return {
         'statusCode': 200,
-        'body': json.dumps(ideology)
+        'body': json.dumps(ideologies)
     }
 
 
