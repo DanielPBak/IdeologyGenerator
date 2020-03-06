@@ -17,10 +17,12 @@
 <script>
 const Http = new XMLHttpRequest();
 const url='https://975kxs927c.execute-api.us-east-1.amazonaws.com/Prod/service_ideology/Dev';
+const ideologies = [];
 
 Http.onreadystatechange = (e) => {
   if(Http.readyState === XMLHttpRequest.DONE) {
-      document.getElementById("ideology-result").innerHTML = Http.responseText;
+      var request_obj = JSON.parse(Http.responseText);
+      document.getElementById("ideology-result").innerHTML = request_obj;
   }
 }
 
