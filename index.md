@@ -35,11 +35,11 @@ function generateNew(){
 
   if (ideologies.length <= 1){
     Http.open("GET", url);
-    Http.send('5');
+    Http.send('8');
   }
   else if (ideologies.length <= 5){
       Http.open("POST", url);
-      Http.send('25');
+      Http.send('50');
   }
     
  }
