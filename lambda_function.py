@@ -327,7 +327,7 @@ def generate_one_ideo():
 def lambda_handler(event, context):
     try:
         if 'body' in event and event['body'] is not None:
-            n_ideologies = min(int(event['body']), 25)
+            n_ideologies = min(int(event['body']), 50)
         else:
             n_ideologies = 5
         if random.random() < 0.001 and False:
