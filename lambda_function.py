@@ -144,8 +144,8 @@ class Generator:
 
         has_prefix = random.random() < p_prefix
         has_adj = random.random() < p_adj
-        new_p_prefix = min(p_prefix * p_prefix, p_prefix * .33)
-        new_p_adj = min(p_adj * p_adj, p_adj * .33)
+        new_p_prefix = min(p_prefix * p_prefix, p_prefix * .25)
+        new_p_adj = min(p_adj * p_adj, p_adj * .25)
 
         if has_prefix:
             if is_double:
