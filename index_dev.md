@@ -32,15 +32,20 @@ function generateNew(){
   if (ideologies.length > 0){
     document.getElementById("ideology-result").innerHTML = ideologies.shift();
   }
+  
+  var to_send = {};
+
 
   if (ideologies.length <= 1){
+    to_send['n_ideo'] = 5;
     Http.open("GET", url);
-    Http.send('5');
+    Http.send(JSON.stringify(to_send));
   }
   else if (ideologies.length <= 5){
       Http.open("POST", url);
-      Http.setRequestHeader("ga_client_id", ga.getAll()[0].get('clientId'));
-      Http.send('25');
+      to_send['g_client_id'] = ga.getAll()[0].get('clientId');
+      to_send['n_ideo'] = 25;
+      Http.send(JSON.stringify(to_send));
   }
     
  }
