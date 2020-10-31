@@ -340,6 +340,9 @@ def lambda_handler(event, context):
 
     print('## EVENT')
     print(event)
+    print('## CONTEXT')
+    print(context)
+    print('## IDEOLOGIES')
     print(ideologies)
     
     return {
