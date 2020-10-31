@@ -57,7 +57,7 @@ class Generator:
 
 
                 words = words.split(',')
-                words = [word.capitalize().replace(';', ',').replace("'", "!!!!!!").title().replace("!!!!!!", "'") for word in words]
+                words = [word.replace(';', ',').replace("'", "abcdefgh").title().replace("abcdefgh", "'") for word in words]
 
                 type = row[1]
 
