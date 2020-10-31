@@ -325,8 +325,13 @@ def generate_one_ideo():
                 
 
 def lambda_handler(event, context):
+    client_id = None
     try:
         if 'body' in event and event['body'] is not None:
+            body = json.loads(event['body'])
+            
+            n_ideologies = body['n_ideo']
+            client_id = body['g_client_id']
             n_ideologies = min(int(event['body']), 50)
         else:
             n_ideologies = 5
@@ -340,10 +345,10 @@ def lambda_handler(event, context):
 
     print('## EVENT')
     print(event)
-    print('## CONTEXT')
-    print(context)
     print('## IDEOLOGIES')
     print(ideologies)
+    if client_id is not None:
+        print('## CLIENT_ID: ' + client_id)
     
     return {
         'statusCode': 200,
