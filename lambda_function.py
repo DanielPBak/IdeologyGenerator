@@ -3,6 +3,7 @@ import csv
 from urllib import request
 import json
 import io
+import string
 url = r"https://docs.google.com/spreadsheets/d/e/2PACX-1vR1woWAU1ClzNJBUElMoxLstPYmhq0JfdajTjBABMM3TqpLE5wevkO6SHeoz2a6NS0pDielm9Zx2bWB/pub?gid=0&single=true&output=csv"
 from collections import defaultdict
 
@@ -56,7 +57,7 @@ class Generator:
 
 
                 words = words.split(',')
-                words = [word.capitalize().replace(';', ',').title() for word in words]
+                words = [string.capwords(word.capitalize().replace(';', ',')) for word in words]
 
                 type = row[1]
 
