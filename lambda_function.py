@@ -245,8 +245,7 @@ class Generator:
 
     def get_ending(self):
         self.trace.append('ending')
-        ending = random.choice(self.endings[self.weighted_choice(self.endings_weights)]).title()
-
+        ending = random.choice(self.endings[self.weighted_choice(self.endings_weights)])
 
         ending = ending.replace('{Adj}', '{adj}')
         ending = ending.replace('{Noun}', '{noun}')
