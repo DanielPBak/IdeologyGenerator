@@ -35,7 +35,6 @@ function generateNew(){
 
   if (ideologies.length <= 1){
     Http.open("GET", url);
-    Http.setRequestHeader("ga_client_id", ga.getAll()[0].get('clientId'));
     Http.send('5');
   }
   else if (ideologies.length <= 5){
