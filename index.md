@@ -35,7 +35,7 @@ function generateNew(){
   var to_send = {};
 
   if (ideologies.length <= 1){
-    to_send['n_ideo'] = 5;
+    to_send['n_ideo'] = 15;
     Http.open("GET", url);
     Http.send(JSON.stringify(to_send));
   }
