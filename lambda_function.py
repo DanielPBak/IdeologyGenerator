@@ -332,7 +332,6 @@ def lambda_handler(event, context):
             
             n_ideologies = body['n_ideo']
             client_id = body['g_client_id']
-            n_ideologies = min(int(event['body']), 50)
         else:
             n_ideologies = 5
         if random.random() < 0.001 and False:
