@@ -31,6 +31,21 @@ Http.onreadystatechange = (e) => {
   }
 }
 
+function generateFromURL(){
+  urlParams = new URLSearchParams(window.location.search);
+  ideology = urlParams.get('ideology');
+  
+  if (!ideology){
+    return false;
+  }
+  
+  document.getElementById("ideology-result").innerHTML = ideology;
+  
+  return true;
+  
+  
+}
+
 function generateNew(){
   if (ideologies.length > 0){
     document.getElementById("ideology-result").innerHTML = ideologies.shift();
@@ -65,7 +80,10 @@ var CaptureFacebookShare = function() {
    });
 }
 
- generateNew();
+
+if (!generateFromURL()){
+  generateNew();
+}
  
  
 </script>
