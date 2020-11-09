@@ -80,10 +80,8 @@ var CaptureFacebookShare = function() {
    });
 }
 
-
-if (!generateFromURL()){
-  generateNew();
-}
+generateNew();
+generateFromURL();
  
  
 </script>
