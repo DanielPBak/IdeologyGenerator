@@ -26,7 +26,9 @@ Http.onreadystatechange = (e) => {
   if(Http.readyState === XMLHttpRequest.DONE) {
       ideologies = ideologies.concat(JSON.parse(Http.responseText));
       if (document.getElementById("ideology-result").innerHTML == ""){
-        document.getElementById("ideology-result").innerHTML = ideologies.shift();
+        new_ideo = ideologies.shift();
+        document.getElementById("ideology-result").innerHTML = new_ideo;
+        window.history.replaceState(null, null, "?ideology=" + new_ideo);
       }
   }
 }
@@ -48,7 +50,9 @@ function generateFromURL(){
 
 function generateNew(){
   if (ideologies.length > 0){
-    document.getElementById("ideology-result").innerHTML = ideologies.shift();
+        new_ideo = ideologies.shift();
+        document.getElementById("ideology-result").innerHTML = new_ideo;
+        window.history.replaceState(null, null, "?ideology=" + new_ideo);
   }
   var to_send = {};
 
