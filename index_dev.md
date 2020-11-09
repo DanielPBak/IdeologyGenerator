@@ -5,7 +5,10 @@
   </div>
 </div>
 
-<div class="fb-share-button" data-href="https://danielpbak.github.io/IdeologyGenerator/" data-layout="button" data-size="small" style="position:fixed; bottom:10px; right:10px;"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdanielpbak.github.io%2FIdeologyGenerator%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>
+<div style="position:fixed; bottom:0px; left:0px;">
+<a href="http://twitch.tv/delayeddale" onclick="CaptureOutboundLink('http://twitch.tv/delayeddale'); return false;"><img src="https://icons-for-free.com/iconfiles/png/512/twitch-1320183903822488043.png" width="48" height="48" alt="delayeddale's Streambadge"></a>
+</div>
+<div class="fb-share-button" data-href="https://danielpbak.github.io/IdeologyGenerator/" data-layout="button" data-size="small" style="position:fixed; bottom:10px; right:10px;"><a target="_blank" onclick="CaptureFacebookShare(); return false;" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdanielpbak.github.io%2FIdeologyGenerator%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>
 
 <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/cyborg/bootstrap.min.css" rel="stylesheet" integrity="sha384-l7xaoY0cJM4h9xh1RfazbgJVUZvdtyLWPueWNtLAphf/UbBgOVzqbOTogxPwYLHM" crossorigin="anonymous">
 
@@ -32,12 +35,10 @@ function generateNew(){
   if (ideologies.length > 0){
     document.getElementById("ideology-result").innerHTML = ideologies.shift();
   }
-  
   var to_send = {};
 
-
   if (ideologies.length <= 1){
-    to_send['n_ideo'] = 5;
+    to_send['n_ideo'] = 15;
     Http.open("GET", url);
     Http.send(JSON.stringify(to_send));
   }
@@ -49,6 +50,21 @@ function generateNew(){
   }
     
  }
+ 
+var CaptureOutboundLink = function(url) {
+   ga('send', 'event', 'outbound', 'click', url, {
+     'transport': 'beacon',
+     'hitCallback': function(){document.location = url;}
+   });
+}
+
+var CaptureFacebookShare = function() {
+   ga('send', 'event', 'share', 'click',  {
+     'transport': 'beacon',
+     'hitCallback': function(){}
+   });
+}
+
  generateNew();
  
  
