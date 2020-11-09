@@ -6,9 +6,9 @@
 </div>
 
 <div style="position:fixed; bottom:0px; left:0px;">
-<a href="http://twitch.tv/delayeddale" onclick="captureOutboundLink('http://twitch.tv/delayeddale')"><img src="https://icons-for-free.com/iconfiles/png/512/twitch-1320183903822488043.png" width="48" height="48" alt="delayeddale's Streambadge"></a>
+<a href="http://twitch.tv/delayeddale" onclick="CaptureOutboundLink('http://twitch.tv/delayeddale'); return false;"><img src="https://icons-for-free.com/iconfiles/png/512/twitch-1320183903822488043.png" width="48" height="48" alt="delayeddale's Streambadge"></a>
 </div>
-<div class="fb-share-button" data-href="https://danielpbak.github.io/IdeologyGenerator/" data-layout="button" data-size="small" style="position:fixed; bottom:10px; right:10px;"><a target="_blank" onclick="captureFacebookShare()" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdanielpbak.github.io%2FIdeologyGenerator%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>
+<div class="fb-share-button" data-href="https://danielpbak.github.io/IdeologyGenerator/" data-layout="button" data-size="small" style="position:fixed; bottom:10px; right:10px;"><a target="_blank" onclick="CaptureFacebookShare(); return false;" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdanielpbak.github.io%2FIdeologyGenerator%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>
 
 <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/cyborg/bootstrap.min.css" rel="stylesheet" integrity="sha384-l7xaoY0cJM4h9xh1RfazbgJVUZvdtyLWPueWNtLAphf/UbBgOVzqbOTogxPwYLHM" crossorigin="anonymous">
 
