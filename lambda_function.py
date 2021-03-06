@@ -140,22 +140,24 @@ class Generator:
 
         ideologies = []
         traces = []
+        uid_lists = []
 
         for i in range(0, n_ideologies):
             self.trace = []
-            ideologies.append(self.generate_ideology())
+            ideology, ideology_ids = self.generate_ideology()
+            ideologies.append(ideology)
+            uid_lists.append(ideology_ids)
             traces.append(self.trace)
-        return ideologies, traces
+        return ideologies, traces, uid_lists
 
     def get_noun(self, p_adj=0.5, p_prefix=0.5, p_double=0.25, is_double=False):
 
         self.trace.append('Noun')
         choice = self.weighted_choice(self.nouns_weights)
-        print('choice:')
-        print(choice)
         noun = random.choice(self.nouns[choice])
         noun_uid = self.nouns_unique_ids[choice]
-        print(noun_uid)
+        new_uids = [noun_uid]
+
 
         if self.debug_mode:
             noun = 'noun'
@@ -176,18 +178,23 @@ class Generator:
                 prefix_p_hyphen = 0
             else:
                 prefix_p_hyphen = .25
-            prefix = self.get_prefix(new_p_prefix, p_hyphen=prefix_p_hyphen)
+            prefix, prefix_uids = self.get_prefix(new_p_prefix, p_hyphen=prefix_p_hyphen)
+            new_uids += prefix_uids
             noun = prefix + noun
 
         noun = noun
 
         if has_adj:
-            noun = self.get_desc(new_p_adj, new_p_prefix) + ' ' + noun
+            adj_noun, adj_uids = self.get_desc(new_p_adj, new_p_prefix)
+            noun = adj_noun + ' ' + noun
+            new_uids += adj_uids
 
         if has_double:
-            noun = noun + '-' + self.get_noun(p_adj=0, p_prefix=0.25, p_double=0, is_double=True)
+            new_noun, double_uids = self.get_noun(p_adj=0, p_prefix=0.25, p_double=0, is_double=True)
+            noun = noun + '-' + new_noun
+            new_uids += double_uids
 
-        return noun
+        return noun, new_uids
 
     def get_desc(self, p_prefix=0.5, p_adj=0.33, p_double=0.4, p_adverb=0.2):
         new_p_prefix = min(p_prefix * p_prefix, p_prefix * .33)
@@ -197,12 +204,16 @@ class Generator:
         desc_idx = self.weighted_choice(self.all_descs_weights)
 
         adjs = self.all_descs[desc_idx]
+        uid = self.all_descs_unique_ids[desc_idx]
+
+        uids = [uid]
 
         add_adverb = False
         if adjs in self.desc_adjs:
             is_desc_adj = True
         else:
             is_desc_adj = False
+
 
         if is_desc_adj and random.random() < p_adverb:
             add_adverb = True
@@ -218,27 +229,35 @@ class Generator:
         adj = adj.replace('{Noun}', '{noun}')
 
         if '{adj1}' in adj or '{adj2}' in adj:
-            adj = adj.format(adj1=self.get_desc(p_adj=new_p_adj, p_prefix=new_p_prefix, p_double=0),
-                             adj2=self.get_desc(p_adj=new_p_adj, p_prefix=new_p_prefix, p_double=0))
+            adj1, adj1_uids = self.get_desc(p_adj=new_p_adj, p_prefix=new_p_prefix, p_double=0)
+            adj2, adj2_uids = self.get_desc(p_adj=new_p_adj, p_prefix=new_p_prefix, p_double=0)
+            adj = adj.format(adj1=adj1,
+                             adj2=adj2)
 
-            return adj
+            return adj, uids + adj1_uids + adj2_uids
 
         if self.debug_mode:
             adj = 'adj'
 
         if is_desc_adj and random.random() < p_double:
-            adj = adj + '-' + self.get_desc(p_adj=0, p_double=0, p_prefix=0.1, p_adverb=0)
+            new_desc, new_desc_uids = self.get_desc(p_adj=0, p_double=0, p_prefix=0.1, p_adverb=0)
+            adj = adj + '-' + new_desc
+            uids += new_desc_uids
 
         if random.random() < p_prefix * prefix_weight:
-            adj = self.get_prefix(p_prefix=new_p_prefix) + adj
+            prefix, prefix_uids = self.get_prefix(p_prefix=new_p_prefix)
+            adj = prefix + adj
+            uids += prefix_uids
 
         if add_adverb:
             adj = self.get_adverb() + ' ' + adj
 
         if random.random() < p_adj:
-            adj = '{} {}'.format(self.get_desc(new_p_prefix, new_p_adj), adj)
+            new_desc, new_desc_uids = self.get_desc(new_p_prefix, new_p_adj)
+            uids += new_desc_uids
+            adj = '{} {}'.format(new_desc, adj)
 
-        return adj
+        return adj, uids
 
     def get_prefix(self, p_prefix=0.15, p_hyphen=0.5):
         self.trace.append('prefix')
@@ -248,10 +267,12 @@ class Generator:
         prefix_weight = self.prefix_hasp_weights[prefix_idx]
 
         pref = random.choice(self.prefixes[prefix_idx])
+        uid = self.prefixes_unique_ids[prefix_idx]
+
+        uids = [uid]
 
         if self.debug_mode:
             pref = 'pref'
-
 
         if pref.endswith('-'):
             p_next_hyphen = 1
@@ -263,43 +284,54 @@ class Generator:
                 p_next_hyphen = 1
 
         if random.random() < p_prefix * prefix_weight:
-            pref = self.get_prefix(p_hyphen=p_next_hyphen, p_prefix=new_p_prefix) + pref
+            new_pref, new_uids = self.get_prefix(p_hyphen=p_next_hyphen, p_prefix=new_p_prefix)
 
-        return pref
+            pref = new_pref + pref
+            uids += new_uids
+
+        return pref, uids
 
     def get_ending(self):
         self.trace.append('ending')
-        ending = random.choice(self.endings[self.weighted_choice(self.endings_weights)])
+        choice = self.weighted_choice(self.endings_weights)
+        ending = random.choice(self.endings[choice])
+
+        uid = self.endings_unique_ids[choice]
+
+        uids = [uid]
 
         ending = ending.replace('{Adj}', '{adj}')
         ending = ending.replace('{Noun}', '{noun}')
 
-        desc = self.get_desc(p_double=0.2, p_prefix=0.2, p_adj=0.1)
-        noun = self.get_noun(p_adj=0.1, p_prefix=0.2, p_double=0.2)
+        desc, desc_uids = self.get_desc(p_double=0.2, p_prefix=0.2, p_adj=0.1)
+        noun, noun_uids = self.get_noun(p_adj=0.1, p_prefix=0.2, p_double=0.2)
+
+        uids += noun_uids + desc_uids
 
         ending = ending.format(adj=desc,
                                noun=noun)
 
 
-        return ending
+        return (ending, uids)
 
     def get_adverb(self):
         self.trace.append('adverb')
         # adverb can have adj?
 
-
-        adverb = random.choice(self.adverbs[self.weighted_choice(self.adverbs_weights)])
+        idx = self.weighted_choice(self.adverbs_weights)
+        adverb = random.choice(self.adverbs[idx])
+        uid = self.adverbs_unique_ids[idx]
 
         if self.debug_mode:
             adverb = 'adverb'
-        return adverb
+        return (adverb, uid)
 
 
     def generate_ideology(self, p_ending=0.33, p_start=0.5):
         force_prefix = random.choice([False, True])
         with_ending = random.random() < p_ending
 
-
+        uids = []
         if force_prefix:
             p_prefix = 1
             p_adj = .75
@@ -311,14 +343,16 @@ class Generator:
         #     p_prefix = p_prefix / 2
         #     p_adj = p_adj / 2
 
-        noun = self.get_noun(p_prefix, p_adj)
+        noun, noun_uids = self.get_noun(p_prefix, p_adj)
+
+        uids += noun_uids
 
         ideo = '{}'.format(noun)
 
         if with_ending:
 
-            ending = self.get_ending()
-
+            ending, ending_uids = self.get_ending()
+            uids += ending_uids
 
             ending = ending.strip()
 
@@ -333,7 +367,7 @@ class Generator:
             #
             # ideo = ideo + ' With {} Characteristics'.format(characteristics)
 
-        return ideo
+        return ideo, uids
 
 response = request.urlopen(url)
 html = response.read()
@@ -343,13 +377,14 @@ gen.get_words()
 
 def generate_one_ideo():
 
-    ideologies, traces = gen.get_ideologies(1)
+    ideologies, traces, uid_lists = gen.get_ideologies(1)
 
     return ideologies[0]
                 
 
 def lambda_handler(event, context):
     client_id = None
+    uid_lists = []
     try:
         if 'body' in event and event['body'] is not None:
             body = json.loads(event['body'])
@@ -361,7 +396,7 @@ def lambda_handler(event, context):
         if random.random() < 0.01 and True:
             ideologies = ["I know who you are.", "I know what you're doing.", "I know where you live.", "Prepare.", "Prepare..", "Prepare...", "Happy Halloween!"]
         else:
-            ideologies = gen.get_ideologies(n_ideologies)[0]
+            ideologies, traces, uid_lists = gen.get_ideologies(n_ideologies)
     except Exception as e:
         print(e)
         ideologies = [str(e)]
@@ -370,19 +405,24 @@ def lambda_handler(event, context):
     print(event)
     print('## IDEOLOGIES')
     print(ideologies)
+    print('## UIDs')
+    print(uid_lists)
     if client_id is not None:
         print('## CLIENT_ID: ' + client_id)
+
+    body_ret = {'ideologies': ideologies,
+                'uid_lists': uid_lists}
     
     return {
         'statusCode': 200,
-        'body': json.dumps(ideologies)
+        'body': json.dumps(body_ret)
     }
 
 
 
 if __name__ == '__main__':
-    n_ideologies = 10000
-    ideologies, traces = gen.get_ideologies(n_ideologies)
+    n_ideologies = 5
+    ideologies, traces, uid_lists = gen.get_ideologies(n_ideologies)
 
     counts = defaultdict(int)
     lens = []
@@ -407,3 +447,6 @@ if __name__ == '__main__':
 
     for k in s:
         print(k)
+
+    for i in uid_lists:
+        print(i)
