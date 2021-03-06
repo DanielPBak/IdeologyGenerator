@@ -13,24 +13,31 @@ class Generator:
     desc_adjs = []
     desc_adjs_weights = []
     desc_adjs_hasp_weights = []
+    desc_adjs_unique_ids = []
     desc_nouns = []
     desc_nouns_weights = []
     desc_nouns_hasp_weights = []
+    desc_nouns_unique_ids = []
     prefixes = []
     prefix_weights = []
     prefix_hasp_weights = []
+    prefixes_unique_ids = []
     nouns = []
     nouns_weights = []
     nouns_hasp_weights = []
+    nouns_unique_ids = []
     adverbs = []
     adverbs_weights = []
+    adverbs_unique_ids = []
     endings = []
     endings_weights = []
+    endings_unique_ids = []
 
 
     all_descs = []
     all_descs_weights = []
     all_descs_hasp_weights = []
+    all_descs_unique_ids = []
     rows = []
     
     def __init__(self, html):
@@ -60,6 +67,7 @@ class Generator:
                 words = [word.replace(';', ',').replace("'", "abcdefgh").title().replace("abcdefgh", "'") for word in words]
 
                 type = row[1]
+                unique_id = row[7]
 
                 if row[2] == '':
                     weight = 1
@@ -75,24 +83,34 @@ class Generator:
                     self.desc_adjs.append(words)
                     self.desc_adjs_weights.append(weight)
                     self.desc_adjs_hasp_weights.append(hasp_weight)
+                    self.desc_adjs_unique_ids.append(unique_id)
                 elif type == 'DESCNOUN':
                     self.desc_nouns.append(words)
                     self.desc_nouns_weights.append(weight)
                     self.desc_nouns_hasp_weights.append(hasp_weight)
+                    self.desc_nouns_unique_ids.append(unique_id)
+
                 elif type == 'PREFIX':
                     self.prefixes.append(words)
                     self.prefix_weights.append(weight)
                     self.prefix_hasp_weights.append(hasp_weight)
+                    self.prefixes_unique_ids.append(unique_id)
+
                 elif type == 'ENDING':
                     self.endings.append(words)
                     self.endings_weights.append(weight)
+                    self.endings_unique_ids.append(unique_id)
+
                 elif type == 'NOUN':
                     self.nouns.append(words)
                     self.nouns_weights.append(weight)
                     self.nouns_hasp_weights.append(hasp_weight)
+                    self.nouns_unique_ids.append(unique_id)
+
                 elif type == 'ADVERB':
                     self.adverbs.append(words)
                     self.adverbs_weights.append(weight)
+                    self.adverbs_unique_ids.append(unique_id)
                 else:
                     import pdb
                     pdb.set_trace()
@@ -103,6 +121,7 @@ class Generator:
         self.all_descs = self.desc_adjs + self.desc_nouns
         self.all_descs_weights = self.desc_adjs_weights + self.desc_nouns_weights
         self.all_descs_hasp_weights = self.desc_adjs_hasp_weights + self.desc_nouns_hasp_weights
+        self.all_descs_unique_ids = self.desc_adjs_unique_ids + self.desc_nouns_unique_ids
 
     def weighted_choice(self, weights):
         totals = []
@@ -131,7 +150,12 @@ class Generator:
     def get_noun(self, p_adj=0.5, p_prefix=0.5, p_double=0.25, is_double=False):
 
         self.trace.append('Noun')
-        noun = random.choice(self.nouns[self.weighted_choice(self.nouns_weights)])
+        choice = self.weighted_choice(self.nouns_weights)
+        print('choice:')
+        print(choice)
+        noun = random.choice(self.nouns[choice])
+        noun_uid = self.nouns_unique_ids[choice]
+        print(noun_uid)
 
         if self.debug_mode:
             noun = 'noun'
