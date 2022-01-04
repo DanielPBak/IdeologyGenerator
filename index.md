@@ -5,7 +5,6 @@
   </div>
 </div>
 
-
 <div class="fb-share-button" data-href="https://danielpbak.github.io/IdeologyGenerator/" data-layout="button" data-size="small" style="position:fixed; bottom:10px; right:10px;"><a target="_blank" onclick="CaptureFacebookShare(); return false;" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdanielpbak.github.io%2FIdeologyGenerator%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>
 
 <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/cyborg/bootstrap.min.css" rel="stylesheet" integrity="sha384-l7xaoY0cJM4h9xh1RfazbgJVUZvdtyLWPueWNtLAphf/UbBgOVzqbOTogxPwYLHM" crossorigin="anonymous">
@@ -24,14 +23,33 @@ Http.onreadystatechange = (e) => {
   if(Http.readyState === XMLHttpRequest.DONE) {
       ideologies = ideologies.concat(JSON.parse(Http.responseText));
       if (document.getElementById("ideology-result").innerHTML == ""){
-        document.getElementById("ideology-result").innerHTML = ideologies.shift();
+        new_ideo = ideologies.shift();
+        document.getElementById("ideology-result").innerHTML = new_ideo;
+        window.history.replaceState(null, null, "?ideology=" + new_ideo);
       }
   }
 }
 
+function generateFromURL(){
+  urlParams = new URLSearchParams(window.location.search);
+  ideology = urlParams.get('ideology');
+  
+  if (!ideology){
+    return false;
+  }
+  
+  document.getElementById("ideology-result").innerHTML = ideology;
+  
+  return true;
+  
+  
+}
+
 function generateNew(){
   if (ideologies.length > 0){
-    document.getElementById("ideology-result").innerHTML = ideologies.shift();
+        new_ideo = ideologies.shift();
+        document.getElementById("ideology-result").innerHTML = new_ideo;
+        window.history.replaceState(null, null, "?ideology=" + new_ideo);
   }
   var to_send = {};
 
@@ -42,7 +60,9 @@ function generateNew(){
   }
   else if (ideologies.length <= 5){
       Http.open("POST", url);
-      to_send['g_client_id'] = ga.getAll()[0].get('clientId');
+      if (ga.getAll().length && ga.getAll()[0].hasAttribute('clientId')){
+        to_send['g_client_id'] = ga.getAll()[0].get('clientId');
+      }
       to_send['n_ideo'] = 25;
       Http.send(JSON.stringify(to_send));
   }
@@ -63,7 +83,8 @@ var CaptureFacebookShare = function() {
    });
 }
 
- generateNew();
+generateNew();
+generateFromURL();
  
  
 </script>
