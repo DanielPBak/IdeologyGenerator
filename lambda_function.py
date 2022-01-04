@@ -329,9 +329,15 @@ def lambda_handler(event, context):
     try:
         if 'body' in event and event['body'] is not None:
             body = json.loads(event['body'])
-            
-            n_ideologies = body['n_ideo']
-            client_id = body['g_client_id']
+            if 'n_ideo' in body:
+                n_ideologies = body['n_ideo']
+            else:
+                n_ideologies = 5
+                
+            if 'g_client_id' in body:
+                client_id = body['g_client_id']
+            else:
+                client_id = 'NO_G_CLIENT_ID'
         else:
             n_ideologies = 5
         if random.random() < 0.01 and True:
