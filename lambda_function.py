@@ -1,11 +1,21 @@
+import os
 import random
 import csv
 from urllib import request
+import requests
 import json
 import io
-import string
-url = r"https://docs.google.com/spreadsheets/d/e/2PACX-1vR1woWAU1ClzNJBUElMoxLstPYmhq0JfdajTjBABMM3TqpLE5wevkO6SHeoz2a6NS0pDielm9Zx2bWB/pub?gid=0&single=true&output=csv"
 from collections import defaultdict
+url = r"https://docs.google.com/spreadsheets/d/e/2PACX-1vR1woWAU1ClzNJBUElMoxLstPYmhq0JfdajTjBABMM3TqpLE5wevkO6SHeoz2a6NS0pDielm9Zx2bWB/pub?gid=0&single=true&output=csv"
+MODE_IDEOLOGIES = 'ideologies'
+MODE_DESCRIPTION = 'description'
+SUPPORTED_MODES = [MODE_DESCRIPTION, MODE_IDEOLOGIES]
+ACADEMIC_NARRATOR = "academic"
+DEFAULT_NARRATOR = ACADEMIC_NARRATOR
+OPENAI_URL = "https://api.openai.com/v1/chat/completions"
+DESCRIPTION_ADDS = {
+    ACADEMIC_NARRATOR: "The description should be dry, funny and brief. It should be written in the style and vernacular of an academic."
+}
 
 
 class Generator:
@@ -322,13 +332,42 @@ def generate_one_ideo():
     ideologies, traces = gen.get_ideologies(1)
 
     return ideologies[0]
-                
+
+
+def get_gpt_description(ideology, narrator):
+    key = os.environ['OPENAI_API_KEY']
+    headers = {"Authorization": f"Bearer {key}",
+               "Content-Type": "application/json"}
+    payload = {
+        "model": "gpt-3.5-turbo",
+        "messages": [{"role": "user",
+                      "content": f"Write a fictional description of the fictional ideology of {ideology}, it's history, great thinkers, and controversies. "
+                                 f"Synthesize the ideology rather than explaining its component words. {DESCRIPTION_ADDS[narrator]}."
+                                 f"Write between 1 and 3 paragraphs."
+                                 f"Add a final paragraph with the ideology's political compass cartesian coordinates in a (x, y) format "
+                                 f"and a justification for them. "
+                                 f"x is the coordinate representing economics (left-right) and y is the coordinate representing authoritarianism"}]}
+    ret = requests.post(OPENAI_URL, json=payload, headers=headers)
+
+    return ret.json()['choices'][0]['message']['content']
+
 
 def lambda_handler(event, context):
     client_id = None
+    to_return = {}
     try:
-        if 'body' in event and event['body'] is not None:
+        if 'body' not in event or event['body'] is None:
+            raise Exception("No body in event.")
+        else:
             body = json.loads(event['body'])
+            if 'mode' in body:
+                mode = body['mode']
+            else:
+                mode = 'ideologies'
+
+            if mode not in SUPPORTED_MODES:
+                mode = 'ideologies'
+
             if 'n_ideo' in body:
                 n_ideologies = body['n_ideo']
             else:
@@ -338,32 +377,51 @@ def lambda_handler(event, context):
                 client_id = body['g_client_id']
             else:
                 client_id = 'NO_G_CLIENT_ID'
+
+        to_return['mode'] = mode
+        to_return['ideologies'] = []
+        to_return['description'] = ""
+        if mode == MODE_IDEOLOGIES:
+            if random.random() < 0.01 and False:
+                ideologies = ["I know who you are.", "I know what you're doing.", "I know where you live.", "Prepare.", "Prepare..", "Prepare...", "Happy Halloween!"]
+            else:
+                ideologies = gen.get_ideologies(n_ideologies)[0]
+
+            to_return['ideologies'] = ideologies
+        elif mode == MODE_DESCRIPTION:
+            assert 'ideology_to_describe' in body
+            ideology_to_describe = body['ideology_to_describe']
+            if 'narrator' in body:
+                narrator = body['narrator']
+            else:
+                narrator = DEFAULT_NARRATOR
+
+            description = get_gpt_description(ideology_to_describe, narrator)
+            to_return['description'] = description
         else:
-            n_ideologies = 5
-        if random.random() < 0.01 and False:
-            ideologies = ["I know who you are.", "I know what you're doing.", "I know where you live.", "Prepare.", "Prepare..", "Prepare...", "Happy Halloween!"]
-        else:
-            ideologies = gen.get_ideologies(n_ideologies)[0]
+            raise NotImplementedError
     except Exception as e:
         print(e)
         ideologies = [str(e)]
+        to_return['ideologies'] = ideologies
+        to_return['mode'] = MODE_IDEOLOGIES
 
     print('## EVENT')
     print(event)
     print('## IDEOLOGIES')
-    print(ideologies)
+    print(to_return['ideologies'])
     if client_id is not None:
         print('## CLIENT_ID: ' + client_id)
     
     return {
         'statusCode': 200,
-        'body': json.dumps({'ideologies': ideologies,
-                           'mode': 'ideologies'})
+        'body': json.dumps(to_return)
     }
 
 
-
 if __name__ == '__main__':
+
+    print(get_gpt_description("cool ideology", ACADEMIC_NARRATOR))
     n_ideologies = 10000
     ideologies, traces = gen.get_ideologies(n_ideologies)
 
@@ -384,7 +442,7 @@ if __name__ == '__main__':
     print(sum(lens) / len(lens))
 
     for k in counts:
-        counts[k] = counts[k] / n_ideologies
+        counts[k] = int(counts[k] / n_ideologies)
 
     s = sorted(counts.items())
 
