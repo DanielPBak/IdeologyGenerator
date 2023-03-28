@@ -357,26 +357,26 @@ def lambda_handler(event, context):
     to_return = {}
     try:
         if 'body' not in event or event['body'] is None:
-            raise Exception("No body in event.")
+            body = {}
         else:
             body = json.loads(event['body'])
-            if 'mode' in body:
-                mode = body['mode']
-            else:
-                mode = 'ideologies'
+        if 'mode' in body:
+            mode = body['mode']
+        else:
+            mode = 'ideologies'
 
-            if mode not in SUPPORTED_MODES:
-                mode = 'ideologies'
+        if mode not in SUPPORTED_MODES:
+            mode = 'ideologies'
 
-            if 'n_ideo' in body:
-                n_ideologies = body['n_ideo']
-            else:
-                n_ideologies = 5
-                
-            if 'g_client_id' in body:
-                client_id = body['g_client_id']
-            else:
-                client_id = 'NO_G_CLIENT_ID'
+        if 'n_ideo' in body:
+            n_ideologies = body['n_ideo']
+        else:
+            n_ideologies = 5
+
+        if 'g_client_id' in body:
+            client_id = body['g_client_id']
+        else:
+            client_id = 'NO_G_CLIENT_ID'
 
         to_return['mode'] = mode
         to_return['ideologies'] = []
