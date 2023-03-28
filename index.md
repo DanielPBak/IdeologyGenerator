@@ -66,7 +66,7 @@ function generateNew(){
   }
   else if (ideologies.length <= 5){
       Http.open("POST", url);
-      if (ga.getAll().length && ga.getAll()[0].hasAttribute('clientId')){
+      if (ga.getAll().length && ga.getAll()[0].get('clientId')){
         to_send['g_client_id'] = ga.getAll()[0].get('clientId');
       }
       to_send['n_ideo'] = 25;
