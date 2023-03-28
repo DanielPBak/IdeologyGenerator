@@ -21,11 +21,17 @@ var ideologies = [];
 
 Http.onreadystatechange = (e) => {
   if(Http.readyState === XMLHttpRequest.DONE) {
-      ideologies = ideologies.concat(JSON.parse(Http.responseText));
-      if (document.getElementById("ideology-result").innerHTML == ""){
-        new_ideo = ideologies.shift();
-        document.getElementById("ideology-result").innerHTML = new_ideo;
-        window.history.replaceState(null, null, "?ideology=" + new_ideo);
+      response = JSON.parse(Http.responseText)
+  
+      mode = response['mode']
+  
+      if (mode == "ideologies"){
+        ideologies = ideologies.concat(response['ideologies']);
+        if (document.getElementById("ideology-result").innerHTML == ""){
+          new_ideo = ideologies.shift();
+          document.getElementById("ideology-result").innerHTML = new_ideo;
+          window.history.replaceState(null, null, "?ideology=" + new_ideo);
+        }
       }
   }
 }
