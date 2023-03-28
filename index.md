@@ -21,9 +21,9 @@ var ideologies = [];
 
 Http.onreadystatechange = (e) => {
   if(Http.readyState === XMLHttpRequest.DONE) {
-      response = JSON.parse(Http.responseText)
+      response = JSON.parse(Http.responseText);
   
-      mode = response['mode']
+      mode = response['mode'];
   
       if (mode == "ideologies"){
         ideologies = ideologies.concat(response['ideologies']);
