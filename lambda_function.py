@@ -340,7 +340,7 @@ def lambda_handler(event, context):
                 client_id = 'NO_G_CLIENT_ID'
         else:
             n_ideologies = 5
-        if random.random() < 0.01 and True:
+        if random.random() < 0.01 and False:
             ideologies = ["I know who you are.", "I know what you're doing.", "I know where you live.", "Prepare.", "Prepare..", "Prepare...", "Happy Halloween!"]
         else:
             ideologies = gen.get_ideologies(n_ideologies)[0]
