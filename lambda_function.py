@@ -351,7 +351,8 @@ def get_gpt_description(ideology, narrator, source_ip):
                                  f"and a justification for them. x and y are decimal values with, rounded to the nearest tenth. x and y range from -10 to +10."
                                  f"x is the coordinate representing economics (left-right). y is the coordinate representing authoritarianism (down-up). "
                                  f"Down represents lower levels of authoritarianism. "
-                                 f"The paragraph must contain the cartesian coordinates in the (x, y) format."}]}
+                                 f"The paragraph must contain the cartesian coordinates in the (x, y) format. "
+                                 f"All paragraphs must contain no more than three sentences."}]}
     ret = requests.post(OPENAI_URL, json=payload, headers=headers)
     return ret.json()['choices'][0]['message']['content']
 
