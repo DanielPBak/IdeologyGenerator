@@ -6,7 +6,7 @@ import requests
 import json
 import io
 from collections import defaultdict
-MAX_TOKENS = 300
+MAX_TOKENS = 2000
 url = r"https://docs.google.com/spreadsheets/d/e/2PACX-1vR1woWAU1ClzNJBUElMoxLstPYmhq0JfdajTjBABMM3TqpLE5wevkO6SHeoz2a6NS0pDielm9Zx2bWB/pub?gid=0&single=true&output=csv"
 MODE_IDEOLOGIES = 'ideologies'
 MODE_DESCRIPTION = 'description'
@@ -341,7 +341,7 @@ def get_gpt_description(ideology, narrator):
                "Content-Type": "application/json"}
     payload = {
         "model": "gpt-3.5-turbo",
-        "max_token": MAX_TOKENS,
+        "max_token": f"{MAX_TOKENS}",
         "messages": [{"role": "user",
                       "content": f"Write a fictional description of the fictional ideology of {ideology}, it's history, great thinkers, and controversies. "
                                  f"Synthesize the ideology rather than explaining its component words. {DESCRIPTION_ADDS[narrator]}."
