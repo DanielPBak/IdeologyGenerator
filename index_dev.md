@@ -41,7 +41,7 @@ Http.onreadystatechange = (e) => {
         else if (mode === "description"){
             description = this_response['description'];
             document.getElementById("description-result").innerHTML = description;
-            document.getElementById("generate-description").innerHTML = "DESCRIPTION GENERATED!";
+            document.getElementById("generate-description").innerHTML = "DESCRIBED!";
             description_generated = true;
 
             generating_description = false;
@@ -71,7 +71,7 @@ function generateDescription(){
     }
     let ideology = document.getElementById("ideology-result").innerHTML;
     let to_send = {mode: "description", ideology_to_describe: ideology, narrator: "academic"};
-    document.getElementById("generate-description").innerHTML = "GENERATING DESCRIPTION...";
+    document.getElementById("generate-description").innerHTML = "DESCRIBING...";
     generating_description = true;
 
       if (ga.getAll().length && ga.getAll()[0].get('clientId')){

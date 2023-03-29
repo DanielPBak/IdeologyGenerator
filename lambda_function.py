@@ -346,10 +346,11 @@ def get_gpt_description(ideology, narrator, source_ip):
         "messages": [{"role": "user",
                       "content": f"Write a fictional description of the fictional ideology of {ideology}, it's history, great thinkers, and controversies. "
                                  f"Synthesize the ideology rather than explaining its component words. {DESCRIPTION_ADDS[narrator]}."
-                                 f"Write between 1 and 3 paragraphs."
-                                 f"Add a final paragraph with the ideology's political compass cartesian coordinates in a (x, y) format "
-                                 f"and a justification for them. "
-                                 f"x is the coordinate representing economics (left-right) and y is the coordinate representing authoritarianism"}]}
+                                 f"Do this in two paragraphs."
+                                 f"Add a third paragraph with the ideology's political compass cartesian coordinates in a (x, y) format "
+                                 f"and a justification for them. x and y are decimal values with, rounded to the nearest tenth. x and y range from -10 to +10."
+                                 f"x is the coordinate representing economics (left-right) and y is the coordinate representing authoritarianism. "
+                                 f"The paragraph must contain the cartesian coordinates in the (x, y) format."}]}
     ret = requests.post(OPENAI_URL, json=payload, headers=headers)
     return ret.json()['choices'][0]['message']['content']
 
