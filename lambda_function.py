@@ -6,6 +6,7 @@ import requests
 import json
 import io
 from collections import defaultdict
+
 MAX_TOKENS = 1000
 url = r"https://docs.google.com/spreadsheets/d/e/2PACX-1vR1woWAU1ClzNJBUElMoxLstPYmhq0JfdajTjBABMM3TqpLE5wevkO6SHeoz2a6NS0pDielm9Zx2bWB/pub?gid=0&single=true&output=csv"
 MODE_IDEOLOGIES = 'ideologies'
@@ -22,7 +23,6 @@ DESCRIPTION_ADDS = {
 
 
 class Generator:
-
     desc_adjs = []
     desc_adjs_weights = []
     desc_adjs_hasp_weights = []
@@ -40,12 +40,11 @@ class Generator:
     endings = []
     endings_weights = []
 
-
     all_descs = []
     all_descs_weights = []
     all_descs_hasp_weights = []
     rows = []
-    
+
     def __init__(self, html):
         self.html = html.decode('utf-8')
         self.trace = []
@@ -67,7 +66,6 @@ class Generator:
                 if row[0] == '':
                     continue
                 words = row[0]
-
 
                 words = words.split(',')
                 words = [word.replace(';', ',').replace("'", "abcdefgh").title().replace("abcdefgh", "'") for word in words]
@@ -111,7 +109,6 @@ class Generator:
                     pdb.set_trace()
                     print(type)
                     raise NotImplementedError(type)
-
 
         self.all_descs = self.desc_adjs + self.desc_nouns
         self.all_descs_weights = self.desc_adjs_weights + self.desc_nouns_weights
@@ -198,7 +195,6 @@ class Generator:
 
         adj = random.choice(adjs)
 
-
         prefix_weight = self.all_descs_hasp_weights[desc_idx]
 
         adj = adj.replace('{Adj1}', '{adj1}')
@@ -241,7 +237,6 @@ class Generator:
         if self.debug_mode:
             pref = 'pref'
 
-
         if pref.endswith('-'):
             p_next_hyphen = 1
         else:
@@ -269,13 +264,11 @@ class Generator:
         ending = ending.format(adj=desc,
                                noun=noun)
 
-
         return ending
 
     def get_adverb(self):
         self.trace.append('adverb')
         # adverb can have adj?
-
 
         adverb = random.choice(self.adverbs[self.weighted_choice(self.adverbs_weights)])
 
@@ -283,11 +276,9 @@ class Generator:
             adverb = 'adverb'
         return adverb
 
-
     def generate_ideology(self, p_ending=0.33, p_start=0.5):
         force_prefix = random.choice([False, True])
         with_ending = random.random() < p_ending
-
 
         if force_prefix:
             p_prefix = 1
@@ -308,7 +299,6 @@ class Generator:
 
             ending = self.get_ending()
 
-
             ending = ending.strip()
 
             if ending.startswith(','):
@@ -324,14 +314,15 @@ class Generator:
 
         return ideo
 
+
 response = request.urlopen(url)
 html = response.read()
 
 gen = Generator(html)
 gen.get_words()
 
-def generate_one_ideo():
 
+def generate_one_ideo():
     ideologies, traces = gen.get_ideologies(1)
 
     return ideologies[0]
@@ -341,20 +332,20 @@ def get_gpt_description(ideology, narrator, source_ip):
     key = os.environ['OPENAI_API_KEY']
     headers = {"Authorization": f"Bearer {key}",
                "Content-Type": "application/json"}
+
     payload = {
         "user": source_ip,
         "model": "gpt-3.5-turbo",
         "max_tokens": MAX_TOKENS,
         "messages": [{"role": "user",
-                      "content": f"Write a fictional description of the fictional ideology of {ideology}, it's history, great thinkers, and controversies. "
-                                 f"Synthesize the ideology rather than explaining its component words. {DESCRIPTION_ADDS[narrator]}."
-                                 f"Do this in two paragraphs. Do not mention that the ideology is fictional."
-                                 f"Add a third paragraph with the ideology's political compass cartesian coordinates in a (x, y) format "
-                                 f"and a justification for them. x and y are decimal values with, rounded to the nearest tenth. x and y range from -10 to +10."
-                                 f"x is the coordinate representing economics (left-right). y is the coordinate representing authoritarianism (down-up). "
-                                 f"Down represents lower levels of authoritarianism. "
-                                 f"The paragraph must contain the cartesian coordinates in the (x, y) format. "
-                                 f"All paragraphs must contain no more than three sentences."}]}
+                      "content": f"You are writing on the topic of the fictional ideology of {ideology}, it's history, great thinkers, and controversies.\n"
+                                 f"Never mention that the ideology is fictional.\n"
+                                 f"The first paragraph should describe and synthesize the ideology. Sythensize it rather than explaining its component words.\n"
+                                 f"The second paragraph should explain the history and thinkers of the ideology.\n"
+                                 f"The final paragraph should be a single line. It should be the political compass coordinates of the ideology in the (x, y) format.\n"
+                                 f"x and y range from -10.0 to +10.0. x represents economics (left-right), while y represents social (libertarian-authoritarian).\n"
+                                 f"The final line should only be (x, y) with no other words and no explanation.\n"
+                                 f"The first two paragraphs should be written from the perspective of an advocate of the ideology and should convince the reader of the merits of the ideology."}]}
     ret = requests.post(OPENAI_URL, json=payload, headers=headers)
     return ret.json()['choices'][0]['message']['content']
 
@@ -391,7 +382,8 @@ def lambda_handler(event, context):
         to_return['description'] = ""
         if mode == MODE_IDEOLOGIES:
             if random.random() < 0.01 and False:
-                ideologies = ["I know who you are.", "I know what you're doing.", "I know where you live.", "Prepare.", "Prepare..", "Prepare...", "Happy Halloween!"]
+                ideologies = ["I know who you are.", "I know what you're doing.", "I know where you live.", "Prepare.", "Prepare..", "Prepare...",
+                              "Happy Halloween!"]
             else:
                 ideologies = gen.get_ideologies(n_ideologies)[0]
 
@@ -420,7 +412,7 @@ def lambda_handler(event, context):
     print(to_return['ideologies'])
     if client_id is not None:
         print('## CLIENT_ID: ' + client_id)
-    
+
     return {
         'statusCode': 200,
         'body': json.dumps(to_return)
@@ -429,10 +421,12 @@ def lambda_handler(event, context):
 
 if __name__ == '__main__':
     import time
+
     start = time.time()
     print(get_gpt_description("cool ideology", ACADEMIC_NARRATOR))
     print(time.time() - start)
     import sys
+
     sys.exit(0)
     n_ideologies = 10000
     ideologies, traces = gen.get_ideologies(n_ideologies)
