@@ -6,7 +6,7 @@ import requests
 import json
 import io
 from collections import defaultdict
-MAX_TOKENS = 2000
+MAX_TOKENS = 4000
 url = r"https://docs.google.com/spreadsheets/d/e/2PACX-1vR1woWAU1ClzNJBUElMoxLstPYmhq0JfdajTjBABMM3TqpLE5wevkO6SHeoz2a6NS0pDielm9Zx2bWB/pub?gid=0&single=true&output=csv"
 MODE_IDEOLOGIES = 'ideologies'
 MODE_DESCRIPTION = 'description'
