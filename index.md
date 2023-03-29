@@ -1,8 +1,10 @@
 <div id="inner_wrapper">
-  <h5 id="ideology-result" style="text-align:center"></h5>
-  <div id="button-div">
-    <button type="button" class="btn btn-danger" id="generate-result" onclick="generateNew(); ga('send', 'event', 'MainButton', 'Click');">MORE</button>
-  </div>
+        <h5 id="ideology-result" style="text-align:center"></h5>
+        <p id="description-result" style="text-align:left;white-space:pre-line"></p>
+    <div id="button-div">
+        <button type="button" class="btn btn-danger" id="generate-result" onclick="generateNew(); ga('send', 'event', 'MainButton', 'Click');">MORE</button>
+        <button type="button" class="btn btn-success" id="generate-description" onclick="generateDescription(); ga('send', 'event', 'DescriptionButton', 'Click');">DESCRIBE</button>
+    </div>
 </div>
 
 <div class="fb-share-button" data-href="https://danielpbak.github.io/IdeologyGenerator/" data-layout="button" data-size="small" style="position:fixed; bottom:10px; right:10px;"><a target="_blank" onclick="CaptureFacebookShare(); return false;" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdanielpbak.github.io%2FIdeologyGenerator%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>
@@ -17,22 +19,33 @@
 <script>
 const Http = new XMLHttpRequest();
 const url='https://975kxs927c.execute-api.us-east-1.amazonaws.com/Prod/service_ideology/Prod';
-var ideologies = [];
+let ideologies = [];
+let description = "";
+let generating_description = false;
+let description_generated = false;
 
 Http.onreadystatechange = (e) => {
   if(Http.readyState === XMLHttpRequest.DONE) {
-      response = JSON.parse(Http.responseText);
+      let this_response = JSON.parse(Http.responseText);
+      let mode = this_response['mode'];
   
-      mode = response['mode'];
-  
-      if (mode == "ideologies"){
-        ideologies = ideologies.concat(response['ideologies']);
-        if (document.getElementById("ideology-result").innerHTML == ""){
-          new_ideo = ideologies.shift();
+      if (mode === "ideologies"){
+        ideologies = ideologies.concat(this_response['ideologies']);
+        if (document.getElementById("ideology-result").innerHTML === ""){
+          let new_ideo = ideologies.shift();
+          description = "";
           document.getElementById("ideology-result").innerHTML = new_ideo;
           window.history.replaceState(null, null, "?ideology=" + new_ideo);
         }
       }
+        else if (mode === "description"){
+            description = this_response['description'];
+            document.getElementById("description-result").innerHTML = description;
+            document.getElementById("generate-description").innerHTML = "DESCRIBED!";
+            description_generated = true;
+
+            generating_description = false;
+        }
   }
 }
 
@@ -51,17 +64,46 @@ function generateFromURL(){
   
 }
 
+function generateDescription(){
+
+    if (generating_description || description_generated){
+        return;
+    }
+    let ideology = document.getElementById("ideology-result").innerHTML;
+    let to_send = {mode: "description", ideology_to_describe: ideology, narrator: "academic"};
+    document.getElementById("generate-description").innerHTML = "DESCRIBING...";
+    generating_description = true;
+
+      if (ga.getAll().length && ga.getAll()[0].get('clientId')){
+        to_send['g_client_id'] = ga.getAll()[0].get('clientId');
+      }
+
+    Http.open("POST", url);
+    Http.send(JSON.stringify(to_send));
+}
+
 function generateNew(){
+
+    if (generating_description){
+        return;
+    }
+
+    description_generated = false;
+    document.getElementById("generate-description").innerHTML = "DESCRIBE";
+
+    description = "";
+  document.getElementById("description-result").innerHTML = description;
+
   if (ideologies.length > 0){
         new_ideo = ideologies.shift();
         document.getElementById("ideology-result").innerHTML = new_ideo;
         window.history.replaceState(null, null, "?ideology=" + new_ideo);
   }
-  var to_send = {};
+  let to_send = {mode: "ideologies"};
 
   if (ideologies.length <= 1){
     to_send['n_ideo'] = 15;
-    Http.open("GET", url);
+    Http.open("POST", url);
     Http.send(JSON.stringify(to_send));
   }
   else if (ideologies.length <= 5){
@@ -94,3 +136,4 @@ generateFromURL();
  
  
 </script>
+
