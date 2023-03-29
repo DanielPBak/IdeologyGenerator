@@ -17,7 +17,7 @@ DEFAULT_NARRATOR = ADVOCATE_NARRATOR
 OPENAI_URL = "https://api.openai.com/v1/chat/completions"
 DESCRIPTION_ADDS = {
     ACADEMIC_NARRATOR: "The description should be dry, funny and brief. It should be written in the style and vernacular of an academic.",
-    ADVOCATE_NARRATOR: "The description should be written from the perspective, style and vernacular of an adherent to the ideology."
+    ADVOCATE_NARRATOR: "The description should be written from the perspective, style and vernacular of an adherent to the ideology. The description should advocate for the ideology."
 }
 
 
