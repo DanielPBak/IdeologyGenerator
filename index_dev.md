@@ -1,6 +1,6 @@
 <div id="inner_wrapper">
         <h5 id="ideology-result" style="text-align:center"></h5>
-        <p id="description-result" style="text-align:center"></p>
+        <p id="description-result" style="text-align:left;white-space:pre-line"></p>
     <div id="button-div">
         <button type="button" class="btn btn-danger" id="generate-result" onclick="generateNew(); ga('send', 'event', 'MainButton', 'Click');">MORE</button>
         <button type="button" class="btn btn-success" id="generate-description" onclick="generateDescription(); ga('send', 'event', 'DescriptionButton', 'Click');">DESCRIBE</button>
