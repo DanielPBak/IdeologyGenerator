@@ -335,11 +335,12 @@ def generate_one_ideo():
     return ideologies[0]
 
 
-def get_gpt_description(ideology, narrator):
+def get_gpt_description(ideology, narrator, source_ip):
     key = os.environ['OPENAI_API_KEY']
     headers = {"Authorization": f"Bearer {key}",
                "Content-Type": "application/json"}
     payload = {
+        "user": source_ip,
         "model": "gpt-3.5-turbo",
         "max_tokens": MAX_TOKENS,
         "messages": [{"role": "user",
@@ -379,6 +380,7 @@ def lambda_handler(event, context):
         else:
             client_id = 'NO_G_CLIENT_ID'
 
+        source_ip = event['requestContext']['identity']['sourceIp']
         to_return['mode'] = mode
         to_return['ideologies'] = []
         to_return['description'] = ""
@@ -397,7 +399,7 @@ def lambda_handler(event, context):
             else:
                 narrator = DEFAULT_NARRATOR
 
-            description = get_gpt_description(ideology_to_describe, narrator)
+            description = get_gpt_description(ideology_to_describe, narrator, source_ip)
             to_return['description'] = description
         else:
             raise NotImplementedError
