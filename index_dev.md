@@ -62,7 +62,7 @@ function generateFromURL(){
 function generateDescription(){
     let ideology = document.getElementById("ideology-result").innerHTML;
     let to_send = {mode: "description", ideology_to_describe: ideology, narrator: "academic"};
-    Http.open("GET", url);
+    Http.open("POST", url);
     Http.send(JSON.stringify(to_send));
 }
 
@@ -76,7 +76,7 @@ function generateNew(){
 
   if (ideologies.length <= 1){
     to_send['n_ideo'] = 15;
-    Http.open("GET", url);
+    Http.open("POST", url);
     Http.send(JSON.stringify(to_send));
   }
   else if (ideologies.length <= 5){
