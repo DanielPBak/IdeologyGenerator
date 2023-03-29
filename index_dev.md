@@ -21,6 +21,8 @@ const Http = new XMLHttpRequest();
 const url='https://975kxs927c.execute-api.us-east-1.amazonaws.com/Prod/service_ideology/Dev';
 let ideologies = [];
 let description = "";
+let generating_description = false;
+let description_generated = false;
 
 Http.onreadystatechange = (e) => {
   if(Http.readyState === XMLHttpRequest.DONE) {
@@ -32,7 +34,6 @@ Http.onreadystatechange = (e) => {
         if (document.getElementById("ideology-result").innerHTML === ""){
           let new_ideo = ideologies.shift();
           description = "";
-          document.getElementById("description-result").innerHTML = description;
           document.getElementById("ideology-result").innerHTML = new_ideo;
           window.history.replaceState(null, null, "?ideology=" + new_ideo);
         }
@@ -40,6 +41,10 @@ Http.onreadystatechange = (e) => {
         else if (mode === "description"){
             description = this_response['description'];
             document.getElementById("description-result").innerHTML = description;
+            document.getElementById("generate-description").innerHTML = "DESCRIPTION GENERATED!";
+            description_generated = true;
+
+            generating_description = false;
         }
   }
 }
@@ -60,8 +65,14 @@ function generateFromURL(){
 }
 
 function generateDescription(){
+
+    if (generating_description || description_generated){
+        return;
+    }
     let ideology = document.getElementById("ideology-result").innerHTML;
     let to_send = {mode: "description", ideology_to_describe: ideology, narrator: "academic"};
+    document.getElementById("generate-description").innerHTML = "GENERATING DESCRIPTION...";
+    generating_description = true;
 
       if (ga.getAll().length && ga.getAll()[0].get('clientId')){
         to_send['g_client_id'] = ga.getAll()[0].get('clientId');
@@ -72,6 +83,17 @@ function generateDescription(){
 }
 
 function generateNew(){
+
+    if (generating_description){
+        return;
+    }
+
+    description_generated = false;
+    document.getElementById("generate-description").innerHTML = "DESCRIBE";
+
+    description = "";
+  document.getElementById("description-result").innerHTML = description;
+
   if (ideologies.length > 0){
         new_ideo = ideologies.shift();
         document.getElementById("ideology-result").innerHTML = new_ideo;
@@ -81,9 +103,6 @@ function generateNew(){
 
   if (ideologies.length <= 1){
     to_send['n_ideo'] = 15;
-      if (ga.getAll().length && ga.getAll()[0].get('clientId')){
-        to_send['g_client_id'] = ga.getAll()[0].get('clientId');
-      }
     Http.open("POST", url);
     Http.send(JSON.stringify(to_send));
   }
