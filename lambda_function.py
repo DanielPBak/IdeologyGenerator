@@ -6,7 +6,7 @@ import requests
 import json
 import io
 from collections import defaultdict
-MAX_TOKENS = 4000
+MAX_TOKENS = 2000
 url = r"https://docs.google.com/spreadsheets/d/e/2PACX-1vR1woWAU1ClzNJBUElMoxLstPYmhq0JfdajTjBABMM3TqpLE5wevkO6SHeoz2a6NS0pDielm9Zx2bWB/pub?gid=0&single=true&output=csv"
 MODE_IDEOLOGIES = 'ideologies'
 MODE_DESCRIPTION = 'description'
@@ -341,7 +341,7 @@ def get_gpt_description(ideology, narrator):
                "Content-Type": "application/json"}
     payload = {
         "model": "gpt-3.5-turbo",
-        "max_token": f"{MAX_TOKENS}",
+        "max_tokens": MAX_TOKENS,
         "messages": [{"role": "user",
                       "content": f"Write a fictional description of the fictional ideology of {ideology}, it's history, great thinkers, and controversies. "
                                  f"Synthesize the ideology rather than explaining its component words. {DESCRIPTION_ADDS[narrator]}."
@@ -350,7 +350,6 @@ def get_gpt_description(ideology, narrator):
                                  f"and a justification for them. "
                                  f"x is the coordinate representing economics (left-right) and y is the coordinate representing authoritarianism"}]}
     ret = requests.post(OPENAI_URL, json=payload, headers=headers)
-
     return ret.json()['choices'][0]['message']['content']
 
 
