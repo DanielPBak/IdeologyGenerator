@@ -12,10 +12,12 @@ MODE_IDEOLOGIES = 'ideologies'
 MODE_DESCRIPTION = 'description'
 SUPPORTED_MODES = [MODE_DESCRIPTION, MODE_IDEOLOGIES]
 ACADEMIC_NARRATOR = "academic"
-DEFAULT_NARRATOR = ACADEMIC_NARRATOR
+ADVOCATE_NARRATOR = "advocate"
+DEFAULT_NARRATOR = ADVOCATE_NARRATOR
 OPENAI_URL = "https://api.openai.com/v1/chat/completions"
 DESCRIPTION_ADDS = {
-    ACADEMIC_NARRATOR: "The description should be dry, funny and brief. It should be written in the style and vernacular of an academic."
+    ACADEMIC_NARRATOR: "The description should be dry, funny and brief. It should be written in the style and vernacular of an academic.",
+    ADVOCATE_NARRATOR: "The description should be written from the perspective, style and vernacular of an adherent to the ideology."
 }
 
 
