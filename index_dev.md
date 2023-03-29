@@ -61,7 +61,11 @@ function generateFromURL(){
 
 function generateDescription(){
     let ideology = document.getElementById("ideology-result").innerHTML;
+      if (ga.getAll().length && ga.getAll()[0].get('clientId')){
+        to_send['g_client_id'] = ga.getAll()[0].get('clientId');
+      }
     let to_send = {mode: "description", ideology_to_describe: ideology, narrator: "academic"};
+
     Http.open("POST", url);
     Http.send(JSON.stringify(to_send));
 }
@@ -76,6 +80,9 @@ function generateNew(){
 
   if (ideologies.length <= 1){
     to_send['n_ideo'] = 15;
+      if (ga.getAll().length && ga.getAll()[0].get('clientId')){
+        to_send['g_client_id'] = ga.getAll()[0].get('clientId');
+      }
     Http.open("POST", url);
     Http.send(JSON.stringify(to_send));
   }
