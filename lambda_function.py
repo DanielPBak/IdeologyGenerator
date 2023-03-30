@@ -14,11 +14,13 @@ MODE_DESCRIPTION = 'description'
 SUPPORTED_MODES = [MODE_DESCRIPTION, MODE_IDEOLOGIES]
 ACADEMIC_NARRATOR = "academic"
 ADVOCATE_NARRATOR = "advocate"
-DEFAULT_NARRATOR = ADVOCATE_NARRATOR
+JREG_NARRATOR = "jreg"
+DEFAULT_NARRATOR = JREG_NARRATOR
 OPENAI_URL = "https://api.openai.com/v1/chat/completions"
 DESCRIPTION_ADDS = {
-    ACADEMIC_NARRATOR: "The description should be dry, funny and brief. It should be written in the style and vernacular of an academic.",
-    ADVOCATE_NARRATOR: "The description should be written from the perspective, style and vernacular of an adherent to the ideology. The description should advocate for the ideology."
+    ACADEMIC_NARRATOR: "The character is dry, funny and brief. This character writes in the style and vernacular of an academic.",
+    ADVOCATE_NARRATOR: "The character is funny and brief. This character writes in the style and vernacular of a hardline, biased advocate for the ideology.",
+    JREG_NARRATOR: "The character is sarcastic, sardonic, witty and brief. The character writes in the style and vernacular of the youtuber Jreg. This character uses modern slang like \"based\" or \"cringe\"."
 }
 
 
@@ -340,9 +342,10 @@ def get_gpt_description(ideology, narrator, source_ip):
         "messages": [{"role": "user",
                       "content": f"You are writing on the topic of the fictional ideology of {ideology}, it's history, great thinkers, and controversies.\n"
                                  f"Never mention that the ideology is fictional.\n"
-                                 f"The first two paragraphs should be written from the biased perspective of an advocate of the ideology and should convince the reader of the merits of the ideology.\n"
-                                 f"The first paragraph should describe and synthesize the ideology. Synthesize it rather than explaining its component words.\n"
-                                 f"The second paragraph should explain the history and thinkers of the ideology as well as any controversies. It should include a quote from one of the thinkers.\n"
+                                 f"The first line should be a quote from one of the ideology's great thinkers.\n"
+                                 f"For the following paragraphs, write them as the following character, with that character's vernacular and worldview: {narrator}.\n"
+                                 f"Next, write a paragraph synthesizing the ideology's meaning and explaining its history. This paragraph should be two sentences.\n"
+                                 f"Next, write a paragraph outlining the ideology's criticisms and controversies. This paragraph should be two sentences.\n"
                     }]}
                                  # f"The final paragraph should be a single line. It should be the political compass coordinates of the ideology in the (x, y) format.\n"
                                  # f"x and y range from -10.0 to +10.0.\n"
