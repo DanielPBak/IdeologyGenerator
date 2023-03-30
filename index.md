@@ -70,7 +70,7 @@ function generateDescription(){
         return;
     }
     let ideology = document.getElementById("ideology-result").innerHTML;
-    let to_send = {mode: "description", ideology_to_describe: ideology, narrator: "academic"};
+    let to_send = {mode: "description", ideology_to_describe: ideology, narrator: "jreg"};
     document.getElementById("generate-description").innerHTML = "DESCRIBING...";
     generating_description = true;
 
