@@ -7,7 +7,7 @@ import json
 import io
 from collections import defaultdict
 
-MAX_TOKENS = 1000
+MAX_TOKENS = 750
 url = r"https://docs.google.com/spreadsheets/d/e/2PACX-1vR1woWAU1ClzNJBUElMoxLstPYmhq0JfdajTjBABMM3TqpLE5wevkO6SHeoz2a6NS0pDielm9Zx2bWB/pub?gid=0&single=true&output=csv"
 MODE_IDEOLOGIES = 'ideologies'
 MODE_DESCRIPTION = 'description'
@@ -340,16 +340,18 @@ def get_gpt_description(ideology, narrator, source_ip):
         "messages": [{"role": "user",
                       "content": f"You are writing on the topic of the fictional ideology of {ideology}, it's history, great thinkers, and controversies.\n"
                                  f"Never mention that the ideology is fictional.\n"
-                                 f"The first paragraph should describe and synthesize the ideology. Sythensize it rather than explaining its component words.\n"
-                                 f"The second paragraph should explain the history and thinkers of the ideology as well as any controversies. It should include a quote from one of the thinkers\n"
-                                 f"The final paragraph should be a single line. It should be the political compass coordinates of the ideology in the (x, y) format.\n"
-                                 f"x and y range from -10.0 to +10.0.\n"
-                                 f"x represents the economic axis, with low values being left-wing and high values being right-wing.\n"
-                                 f"y represents the social axis, with low values being libertarian and high values being authoritarian.\n"
-                                 f"x is the left-right axis and y is the down-up axis.\n"
-                                 #f"The final line should only be (x, y) with no other words and no explanation.\n"
-                                 f"The final line should be the (x, y) coordinates followed by a justification for the coordinates.\n"
-                                 f"The first two paragraphs should be written from the biasedperspective of an advocate of the ideology and should convince the reader of the merits of the ideology. The political compass coordinates and justification should not be biased."}]}
+                                 f"The first two paragraphs should be written from the biased perspective of an advocate of the ideology and should convince the reader of the merits of the ideology.\n"
+                                 f"The first paragraph should describe and synthesize the ideology. Synthesize it rather than explaining its component words.\n"
+                                 f"The second paragraph should explain the history and thinkers of the ideology as well as any controversies. It should include a quote from one of the thinkers.\n"
+                    }]}
+                                 # f"The final paragraph should be a single line. It should be the political compass coordinates of the ideology in the (x, y) format.\n"
+                                 # f"x and y range from -10.0 to +10.0.\n"
+                                 # f"x represents the economic axis, with low values being left-wing and high values being right-wing.\n"
+                                 # f"y represents the social axis, with low values being libertarian and high values being authoritarian.\n"
+                                 # f"x is the left-right axis and y is the down-up axis. Down means more libertarian and up means more authoritarian.\n"
+                                 # #f"The final line should only be (x, y) with no other words and no explanation.\n"
+                                 # f"The final line should be the (x, y) coordinates followed by a justification for the coordinates.\n"
+                                 # f"The first two paragraphs should be written from the biasedperspective of an advocate of the ideology and should convince the reader of the merits of the ideology. The political compass coordinates and justification should not be biased."}]}
     ret = requests.post(OPENAI_URL, json=payload, headers=headers)
     return ret.json()['choices'][0]['message']['content']
 
