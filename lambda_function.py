@@ -346,7 +346,8 @@ def get_gpt_description(ideology, narrator, source_ip):
                                  f"x and y range from -10.0 to +10.0.\n"
                                  f"x represents the economic axis, with low values being left-wing and high values being right-wing.\n"
                                  f"y represents the social axis, with low values being libertarian and high values being authoritarian.\n"
-                                 f"The final line should only be (x, y) with no other words and no explanation.\n"
+                                 #f"The final line should only be (x, y) with no other words and no explanation.\n"
+                                 f"The final line should be the (x, y) coordinates followed by a justification for the coordinates."
                                  f"The first two paragraphs should be written from the perspective of an advocate of the ideology and should convince the reader of the merits of the ideology."}]}
     ret = requests.post(OPENAI_URL, json=payload, headers=headers)
     return ret.json()['choices'][0]['message']['content']
