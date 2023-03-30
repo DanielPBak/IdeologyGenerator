@@ -344,7 +344,7 @@ def get_gpt_description(ideology, narrator, source_ip):
                                  f"Never mention that the ideology is fictional.\n"
                                  f"The first line should be a quote from one of the ideology's great thinkers. It should be in the following format: \"<quote>\" - <thinker's name>\n"
                                  f"For the following paragraphs, write them as the following character, with that character's vernacular and worldview: {narrator}. The character should not mention that they are a character or talk about themselves.\n"
-                                 f"Next, write a paragraph synthesizing the ideology's meaning and explaining its history. It should utilize the entire ideology's definition rather than a single word. This paragraph should be two sentences.\n"
+                                 f"Next, write a paragraph synthesizing the ideology's meaning and explaining its history. The history could be fictional or even in the future. It should utilize the entire ideology's definition rather than a single word. This paragraph should be two sentences.\n"
                                  f"Next, write a paragraph outlining the ideology's criticisms and controversies. This paragraph should be two sentences.\n"
                     }]}
                                  # f"The final paragraph should be a single line. It should be the political compass coordinates of the ideology in the (x, y) format.\n"
