@@ -341,9 +341,11 @@ def get_gpt_description(ideology, narrator, source_ip):
                       "content": f"You are writing on the topic of the fictional ideology of {ideology}, it's history, great thinkers, and controversies.\n"
                                  f"Never mention that the ideology is fictional.\n"
                                  f"The first paragraph should describe and synthesize the ideology. Sythensize it rather than explaining its component words.\n"
-                                 f"The second paragraph should explain the history and thinkers of the ideology.\n"
+                                 f"The second paragraph should explain the history and thinkers of the ideology as well as any controversies. It should include a quote from one of the thinkers\n"
                                  f"The final paragraph should be a single line. It should be the political compass coordinates of the ideology in the (x, y) format.\n"
-                                 f"x and y range from -10.0 to +10.0. x represents economics (left-right), while y represents social (libertarian-authoritarian).\n"
+                                 f"x and y range from -10.0 to +10.0.\n"
+                                 f"x represents the economic axis, with low values being left-wing and high values being right-wing.\n"
+                                 f"y represents the social axis, with low values being libertarian and high values being authoritarian.\n"
                                  f"The final line should only be (x, y) with no other words and no explanation.\n"
                                  f"The first two paragraphs should be written from the perspective of an advocate of the ideology and should convince the reader of the merits of the ideology."}]}
     ret = requests.post(OPENAI_URL, json=payload, headers=headers)
