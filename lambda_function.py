@@ -17,7 +17,7 @@ ADVOCATE_NARRATOR = "advocate"
 JREG_NARRATOR = "jreg"
 DEFAULT_NARRATOR = JREG_NARRATOR
 OPENAI_URL = "https://api.openai.com/v1/chat/completions"
-DESCRIPTION_ADDS = {
+NARRATORS = {
     ACADEMIC_NARRATOR: "The character is dry, funny and brief. This character writes in the style and vernacular of an academic.",
     ADVOCATE_NARRATOR: "The character is funny and brief. This character writes in the style and vernacular of a hardline, biased advocate for the ideology.",
     JREG_NARRATOR: "The character is sarcastic, sardonic, witty and brief. The character writes in the style and vernacular of the youtuber Jreg. This character uses modern slang like \"based\" or \"cringe\"."
@@ -401,7 +401,7 @@ def lambda_handler(event, context):
             assert 'ideology_to_describe' in body
             ideology_to_describe = body['ideology_to_describe']
             if 'narrator' in body:
-                narrator = body['narrator']
+                narrator = NARRATORS[body['narrator']]
             else:
                 narrator = DEFAULT_NARRATOR
 
