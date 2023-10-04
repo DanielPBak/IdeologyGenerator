@@ -7,7 +7,7 @@ import json
 import io
 from collections import defaultdict
 
-MAX_TOKENS = 750
+MAX_TOKENS = 350
 url = r"https://docs.google.com/spreadsheets/d/e/2PACX-1vR1woWAU1ClzNJBUElMoxLstPYmhq0JfdajTjBABMM3TqpLE5wevkO6SHeoz2a6NS0pDielm9Zx2bWB/pub?gid=0&single=true&output=csv"
 MODE_IDEOLOGIES = 'ideologies'
 MODE_DESCRIPTION = 'description'
@@ -15,7 +15,7 @@ SUPPORTED_MODES = [MODE_DESCRIPTION, MODE_IDEOLOGIES]
 ACADEMIC_NARRATOR = "academic"
 ADVOCATE_NARRATOR = "advocate"
 JREG_NARRATOR = "jreg"
-DEFAULT_NARRATOR = JREG_NARRATOR
+DEFAULT_NARRATOR = ADVOCATE_NARRATOR
 OPENAI_URL = "https://api.openai.com/v1/chat/completions"
 NARRATORS = {
     ACADEMIC_NARRATOR: "The character is dry, funny and brief. This character writes in the style and vernacular of an academic.",
@@ -343,9 +343,8 @@ def get_gpt_description(ideology, narrator, source_ip):
                       "content": f"You are writing on the topic of the fictional ideology of {ideology}, it's history, great thinkers, and controversies.\n"
                                  f"Never mention that the ideology is fictional.\n"
                                  f"The first line should be a quote from one of the ideology's great thinkers. It should be in the following format: \"<quote>\" - <thinker's name>\n"
-                                 f"For the following paragraphs, write them as the following character, with that character's vernacular and worldview: {narrator}. The character should not mention that they are a character or talk about themselves.\n"
+                                 f"For the following paragraph, write them as the following character, with that character's vernacular and worldview: {narrator}. The character should not mention that they are a character or talk about themselves.\n"
                                  f"Next, write a paragraph synthesizing the ideology's meaning and explaining its history. The history could be fictional or even in the future. It should utilize the entire ideology's definition rather than a single word. This paragraph should be two sentences.\n"
-                                 f"Next, write a paragraph outlining the ideology's criticisms and controversies. This paragraph should be two sentences.\n"
                     }]}
                                  # f"The final paragraph should be a single line. It should be the political compass coordinates of the ideology in the (x, y) format.\n"
                                  # f"x and y range from -10.0 to +10.0.\n"
